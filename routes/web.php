@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//admin pages
+Route::view('/{path}', 'admin.app')->where('path', '.*$');
