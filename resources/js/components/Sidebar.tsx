@@ -1,15 +1,23 @@
 import React from 'react'
-
-import zIndexes from '../zIndexes'       
+import { Link } from 'react-router-dom'
 
 import { BsFileText } from 'react-icons/bs'
+
+import zIndexes from '../zIndexes'       
+import { getUrl } from '../routes'
 
 interface Props{
     open: boolean,
     onClose: () => void
 }
 
+const navs = [
+    {icon: <BsFileText />, title: 'Halaman', url: getUrl('pages')},
+]
+
 export default function Sidebar({open, onClose}: Props) {
+
+    
     return (
         <div className="tw-relative">
             {/* sidebar */}
@@ -22,11 +30,16 @@ export default function Sidebar({open, onClose}: Props) {
                 {/* List blog */}
                 <div className="tw-flex tw-flex-col tw-mb-3 tw-divide-x">
 
+                    {
+                        navs.map(nav => <Link key={nav.title} to={nav.url} className="tw-flex tw-items-center tw-py-3 tw-border-y tw-border-gray-100 hover:tw-bg-gray-200 tw-px-4">
+                            <span className="tw-mr-2 tw-text-2xl">
+                                {nav.icon}
+                            </span>
+                            <span>{nav.title}</span>
+                        </Link>)
+                    }
                     {/* blog list */}
-                    <div className="tw-flex tw-items-center tw-py-3 tw-border-y tw-border-gray-100 hover:tw-bg-gray-200 tw-px-4">
-                        <BsFileText className="tw-mr-2 tw-text-2xl" />
-                        <span>Halaman</span>
-                    </div>
+                    
                 </div>
             </div>
 

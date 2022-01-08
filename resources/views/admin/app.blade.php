@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/roboto.css') }}">
 </head>
-<body>
+<body class="tw-max-w-screen tw-overflow-x-hidden">
     
     <div id="app"></div>
     <script src="{{mix('js/manifest.js')}}"></script>
