@@ -6,8 +6,10 @@ import App from './App'
 import AuthProvider from './providers/AuthProvider'
 
 render(
-    <AuthProvider>
-        <App />
-    </AuthProvider>
+    <React.StrictMode>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    </React.StrictMode>
 , document.getElementById('app')
 );
