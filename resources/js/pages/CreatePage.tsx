@@ -1,17 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { useAxios } from '../providers/AxiosProvider'
-
-import { format } from 'date-fns'
 import idLocale from 'date-fns/locale/id'
+import { format } from 'date-fns'
 
 import { Editor } from '@tinymce/tinymce-react';
 import { Editor as EditorRef } from 'tinymce/tinymce'
 
 import { BsFillEyeFill } from 'react-icons/bs';
-import { RiSendPlaneFill } from 'react-icons/ri';
+// import { RiSendPlaneFill } from 'react-icons/ri';
 
 import Spinner from '../components/Spinner';
+import { useAxios } from '../providers/AxiosProvider'
+import { useConfig } from '../providers/ConfigProvider';
 
 interface Category {
     id: number;
@@ -28,9 +29,13 @@ enum StatusType {
 
 export default function CreatePage() {
 
-    const  { axios } = useAxios()
+    const editorRef = React.useRef<EditorRef | null>()
+    const isEdit = location.pathname.split('/').pop() === 'edit'
+    const navigate = useNavigate()
 
-    const editorRef = React.useRef<EditorRef | null>();
+    const { axios } = useAxios()
+    const { config, setConfig } = useConfig()
+
 
     const [addCategoryError, setAddCategoryError] = React.useState('')
     const [categories, setCategories] = React.useState<Category[]>([])
@@ -51,14 +56,26 @@ export default function CreatePage() {
     const [tags, setTags] = React.useState<string[]>([])
     const [title, setTitle] = React.useState('')
     const [updatedAt, setUpdatedAt] = React.useState(new Date())
+    const [visibility, setVisibility] = React.useState(false)
     
     //Initalize page
-    React.useEffect(() => { 
+    React.useEffect(() => {
+        if (isEdit) {
+            //go back if id is 0
+            if (config.editPostID === 0) {
+                navigate(-1)
+                return
+            }
+            setPostId(config.editPostID)
+        }
         fetchMetaData()
     }, [])
 
     //watch on changes
     React.useEffect(() => {
+
+        //check if any empty
+        if (title === '' || slug === '' || content === '') return
         
         if(isDirty) {
 
@@ -68,13 +85,14 @@ export default function CreatePage() {
 
             return () => clearTimeout(timer)
         } else {
+            //FIXME
             const timer = setTimeout(() => {
                 setDirty(true)
             }, 1000)
 
             return () => clearTimeout(timer)
         }
-    }, [content, slug, title, selectedCategories, tags])
+    }, [content, slug, title, selectedCategories, tags, visibility])
 
     //Fetch uid, title, content, etc for initial data
     const fetchMetaData = async () => {
@@ -96,7 +114,7 @@ export default function CreatePage() {
              *  updated_at: string
              * }
              */
-            const response = await axios.post('/post/getData', {postId})
+            const response = await axios.post('/post/getData', {postId: isEdit ? config.editPostID : postId})
             setSlug(response.data.slug)
             setTags(response.data.tags)
             setCategories(response.data.categories)
@@ -104,6 +122,8 @@ export default function CreatePage() {
             setPostId(response.data.id)
             setTitle(response.data.title)
             setContent(response.data.content)
+            setUpdatedAt(new Date(response.data.updated_at))
+            setVisibility(response.data.visibility)
             editorRef.current?.setContent(response.data.content)
             setReady(true)
             setStatusType(StatusType.READY)
@@ -195,6 +215,7 @@ export default function CreatePage() {
                 title,
                 content,
                 slug,
+                visibility,
                 tags,
                 categories: selectedCategories,
             })
@@ -209,7 +230,7 @@ export default function CreatePage() {
     return (
         <div className="tw-w-full tw-px-4 tw-flex-grow">
             {/* title */}
-            <h1 className="tw-text-3xl tw-font-semibold">Buat Halaman Baru</h1>
+            <h1 className="tw-text-3xl tw-font-semibold">{isEdit ? 'Edit Halaman' : 'Buat Halaman Baru'}</h1>
 
             <div className="tw-flex tw-gap-2 tw-mt-4">
                 {/* card */}
@@ -311,13 +332,13 @@ export default function CreatePage() {
                             </button>
 
                             {/* publish */}
-                            <button 
+                            {/* <button 
                                 className="tw-py-2 tw-px-3 tw-rounded-md tw-shadow-md tw-flex tw-items-center tw-text-white tw-bg-sky-600 focus:tw-outline-none focus:tw-ring focus:tw-ring-offset-1 focus:tw-ring-sky-600 focus:tw-ring-opacity-50 disabled:tw-opacity-50"
                                 disabled={isLoading}
                             >
                                 <RiSendPlaneFill className='tw-text-lg tw-mr-2' />
                                 Publish!
-                            </button>
+                            </button> */}
                         </div>
 
                         {/* status */}
@@ -348,14 +369,16 @@ export default function CreatePage() {
                         </div>
 
                         {/* visibility */}
-                        {/* <div className={`tw-mt-2 tw-w-full ${isLoading && 'tw-opacity-50'}`}>
+                        <div className={`tw-mt-2 tw-w-full ${isLoading && 'tw-opacity-50'}`}>
                             <input 
+                                checked={visibility}
                                 disabled={isLoading}
                                 id="visibility"
+                                onChange={(e) => setVisibility(e.target.checked)}
                                 type="checkbox"
                             />
                             <label htmlFor="visibility" className="tw-my-auto tw-select-none tw-ml-2">Diakses publik</label>
-                        </div> */}
+                        </div>
                     </div>
 
                     {/* categories */}

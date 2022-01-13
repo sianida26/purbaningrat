@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id');
             $table->string('slug')->unique();
             $table->enum('status', ['draft', 'published']);
-            // $table->boolean('is_public');
+            $table->boolean('is_public');
             $table->text('tags');
             $table->integer('views')->default(0);
             // $table->string('uid')->unique();

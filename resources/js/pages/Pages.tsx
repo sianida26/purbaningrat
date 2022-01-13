@@ -1,5 +1,12 @@
 import React from 'react'
 
+import { Link, useNavigate } from 'react-router-dom'
+
+import { BsPlusLg } from 'react-icons/bs'
+
+import { format } from 'date-fns'
+import idLocale from 'date-fns/locale/id'
+
 import IconButton from '@mui/material/IconButton'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
@@ -8,57 +15,97 @@ import Tooltip from '@mui/material/Tooltip'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import EditIcon from '@mui/icons-material/Edit'
 
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridRenderCellParams, GridValueFormatterParams } from '@mui/x-data-grid'
 
-import { BsPlusLg } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import { useAxios } from '../providers/AxiosProvider'
+import { useConfig } from '../providers/ConfigProvider'
 import { getUrl } from '../routes'
+
+interface Post {
+    id: number,
+    no: number,
+    title: string,
+    views: number,
+    updated_at: string,
+}
 
 export default function Pages() {
 
+    const navigate = useNavigate()
+    const { axios } = useAxios()
+    const { setConfig } = useConfig()
+
+    const [draft, setDraft] = React.useState<Post[]>([])
+    const [published, setPublished] = React.useState<Post[]>([])
     const [tabValue, setTabValue] = React.useState(0)
 
+    React.useEffect(() => {
+        getAllPages()
+    }, [])
+
     const columns: GridColDef[] = [
-        {field: 'id', headerName: 'ID', width: 50},
+        {field: 'no', headerName: '#', width: 50},
         {field: 'title', headerName: 'Judul', flex: 1},
         {field: 'views', headerName: 'Views', width: 100},
-        {field: 'modified_at', headerName: 'Perubahan terakhir', width: 200},
+        {
+            field: 'updated_at', 
+            headerName: 'Perubahan terakhir', 
+            width: 200,
+            valueFormatter: (params: GridValueFormatterParams) => {
+                const date = new Date(params.value as string)
+                return format(date, 'dd MMM yyyy; HH:mm:ss', {locale: idLocale})
+            }
+        },
         {
             field: 'action', 
             headerName: 'Aksi', 
             width: 100, 
-            renderCell: (params: GridRenderCellParams<number>) => (
-                <div className="tw-flex tw-gap-2">
+            renderCell: (params: GridRenderCellParams<number>) => {
+
+                const handleEdit = () => {
+                    setConfig({editPostID: params.row.id})
+                    navigate(getUrl('pages.edit'))
+                }
+
+                return <div className="tw-flex tw-gap-2">
                     {/* lihat */}
                     <Tooltip title="Lihat">
-                        <IconButton onClick={() => {}} color='success'>
+                        <IconButton onClick={() => {/* TODO: navigate to preview */}} color='success'>
                             <VisibilityIcon />
                         </IconButton>
                     </Tooltip>
 
                     {/* edit */}
                     <Tooltip title="Edit">
-                        <IconButton onClick={() => {}} color='warning'>
+                        <IconButton onClick={handleEdit} color='warning'>
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
                 </div>
-            )
+            }
         }
     ]
 
-    const rows: {id:number, title: string, views: number, modified_at: string}[] = [
-        // {id: 1, title: 'Judul 1', views: 100, modified_at: '2020-01-01'},
-        // {id: 2, title: 'Judul 2', views: 200, modified_at: '2020-01-02'},
-        // {id: 3, title: 'Judul 3', views: 300, modified_at: '2020-01-03'},
-        // {id: 4, title: 'Judul 4', views: 400, modified_at: '2020-01-04'},
-        // {id: 5, title: 'Judul 5', views: 500, modified_at: '2020-01-05'},
-        // {id: 6, title: 'Judul 6', views: 600, modified_at: '2020-01-06'},
-        // {id: 7, title: 'Judul 7', views: 700, modified_at: '2020-01-07'},
-        // {id: 8, title: 'Judul 8', views: 800, modified_at: '2020-01-08'},
-        // {id: 9, title: 'Judul 9', views: 900, modified_at: '2020-01-09'},
-        // {id: 10, title: 'Judul 10', views: 1000, modified_at: '2020-01-10'},
-    ]
+    // const rows: {id:number, title: string, views: number, updated_at: string}[] = [
+        
+    // ]
+
+    const getAllPages = async () => {
+
+        try {
+            const response = await axios.post('/post/getAll')
+            setDraft(response.data.draft.map((post: Post, index: number) => ({
+                ...post,
+                no: index + 1,
+            })))
+            setPublished(response.data.published.map((post: Post, index: number) => ({
+                ...post,
+                no: index + 1,
+            })))
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue)
@@ -88,7 +135,7 @@ export default function Pages() {
 
                 <div className="tw-max-w-full tw-h-96 tw-mt-4">
                     <DataGrid
-                        rows={rows}
+                        rows={tabValue === 0 ? published : draft}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5,10]}

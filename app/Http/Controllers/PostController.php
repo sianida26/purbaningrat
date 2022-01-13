@@ -17,7 +17,7 @@ class PostController extends Controller
 
     public function getData(Request $request){
 
-        $post = Post::find($request->id);
+        $post = Post::find($request->postId);
 
         $categories = Category::select('id', 'name')->get();
 
@@ -30,6 +30,7 @@ class PostController extends Controller
                 'slug' => $post->slug,
                 'tags' => $post->tags,
                 'categories' => $categories,
+                'visibility' => $post['is_public'],
                 'selected_categories' => $post->getCategoryIds(),
                 'updated_at' => $post->updated_at,                
             ], 200);
@@ -54,6 +55,7 @@ class PostController extends Controller
                 'content' => $content,
                 'slug' => $slug,
                 'tags' => $tags,
+                'is_public' => false,
                 'user_id' => Auth::id(),
             ]);
 
@@ -64,6 +66,7 @@ class PostController extends Controller
                 'content' => $post->content,
                 'slug' => $post->slug,
                 'tags' => $post->tags,
+                'visibility' => $post['is_public'],
                 'categories' => $categories,
                 'selected_categories' => $post->getCategoryIds(),
                 'updated_at' => $post->updated_at,                
@@ -86,6 +89,7 @@ class PostController extends Controller
             $post->content = $request->content;
             $post->slug = $request->slug;
             $post->tags = $request->tags;
+            $post['is_public'] = $request->visibility;
             $post->categories()->sync($request->categories);
             $post->save();
             return response()->json([
@@ -94,9 +98,38 @@ class PostController extends Controller
                 'content' => $post->content,
                 'slug' => $post->slug,
                 'tags' => $post->tags,
+                'visibility' => $post['is_public'],
                 'categories' => $post->getCategoryIds(),
                 'updated_at' => $post->updated_at,                
             ], 200);
         }
+    }
+
+    public function getAll(){
+        $posts = Post::with('user')
+            ->get()
+            ->map(function($post){
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'views' => $post->views,
+                    'is_public' => $post->is_public,
+                    'updated_at' => $post->updated_at,
+                ];
+            });
+
+        $published = $posts->filter(function($post){
+            return $post['is_public'];
+        })->values()->all();
+
+        $draft = $posts->filter(function($post){
+            return !$post['is_public'];
+        })->values()->all();
+
+        return response()->json([
+            'published' => $published,
+            'draft' => $draft,
+        ], 200);
+        
     }
 }

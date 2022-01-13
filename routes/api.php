@@ -42,8 +42,10 @@ Route::middleware('auth:api')->group(function(){
         });
 
         Route::prefix('post')->group(function(){
-            Route::post('getData', [PostController::class, 'getData']);
+
             Route::post('autosave', [PostController::class, 'autosave']);
+            Route::post('getAll', [PostController::class, 'getAll']);
+            Route::post('getData', [PostController::class, 'getData']);
         });
     });
 });

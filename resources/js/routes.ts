@@ -11,7 +11,8 @@ const routes = [
     {name: 'dashboard', url: 'dashboard', component: Dashboard },
     {name: 'logout', url: 'logout', component: Logout },
     {name: 'pages', url: 'halaman', component: Pages},
-    {name: 'pages.create', url: 'halaman/tambah', component: CreatePage}
+    {name: 'pages.create', url: 'halaman/tambah', component: CreatePage},
+    {name: 'pages.edit', url: 'halaman/edit', component: CreatePage},
 ]
 
 export default routes
