@@ -26,6 +26,8 @@
         "@mui/icons-material": "^5.2.5",
         "@mui/material": "^5.2.7",
         "@mui/x-data-grid": "^5.2.2",
+        "@tinymce/tinymce-react": "^3.13.0",
+        "date-fns": "^2.28.0",
         "dexie": "^3.2.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

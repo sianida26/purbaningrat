@@ -25,9 +25,6 @@ export const useAuth = () => useContext(AuthContext)
 
 const AuthProvider: FC = ({children}) => {
     const [auth, _setState] = useState<IAuth>(authDefaultValues.auth)
-    
-    let token = auth.token
-    
 
     const setAuthState = (newState: IAuth) => _setState(state => {
         return {
