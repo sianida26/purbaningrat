@@ -43,4 +43,19 @@ class Post extends Model
     public function getCategoryIds(){
         return $this->categories()->get()->pluck('id')->toArray();
     }
+
+    /**
+     * Get post word count
+     */
+    public function countWords(){
+        return str_word_count(strip_tags($this->content));
+    }
+
+    /**
+     * Get post read time (200 wpm read)
+     */
+    public function getReadTime(){
+        $t = round($this->countWords() / 200);
+        return $t < 1 ? 1 : $t; //minimal 1 menit
+    }
 }

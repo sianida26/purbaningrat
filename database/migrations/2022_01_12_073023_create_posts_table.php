@@ -16,14 +16,15 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('subtitle')->nullable();
             $table->text('content');
             $table->foreignId('user_id');
             $table->string('slug')->unique();
             $table->enum('status', ['draft', 'published']);
             $table->boolean('is_public');
             $table->text('tags');
+            $table->string('cover_filename')->nullable();
             $table->integer('views')->default(0);
-            // $table->string('uid')->unique();
             $table->timestamps();
         });
     }

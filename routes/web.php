@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +20,9 @@ Route::get('/', function () {
 });
 
 //admin pages
-Route::view('/{path}', 'admin.app')->where('path', '.*$');
+Route::view('/admin', 'admin.app')->where('path', '.*$');
+Route::view('/admin/{path}', 'admin.app')->where('path', '.*$');
+
+
+//blog pages
+Route::get('/blog/{slug}', [PostController::class, 'view'])->where('slug', '.+$');

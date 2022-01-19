@@ -17,3 +17,4 @@ const mix = require('laravel-mix');
         require("tailwindcss")
     ])
     .postCss("resources/css/roboto.css", "public/css/roboto.css")
+    .postCss("resources/css/bootstrap-icons.css", "public/css/bootstrap-icons.css")

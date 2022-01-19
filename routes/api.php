@@ -46,6 +46,8 @@ Route::middleware('auth:api')->group(function(){
             Route::post('autosave', [PostController::class, 'autosave']);
             Route::post('getAll', [PostController::class, 'getAll']);
             Route::post('getData', [PostController::class, 'getData']);
+            Route::post('uploadImage', [PostController::class, 'uploadImage']);
+            Route::post('uploadCover', [PostController::class, 'uploadCover']);
         });
     });
 });

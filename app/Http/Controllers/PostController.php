@@ -9,11 +9,33 @@ use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
     //
+    public function view(Request $request){
+
+        $post = Post::where('slug', $request->slug)->firstOrFail();
+
+        //check if has token
+        if($request->has('t')){
+            
+            if (Hash::check($post->id . '_' . $post->user->id, $request->t)) {
+                return view('blog', ['post' => $post]);
+            } else {
+                abort(404);
+                return;
+            }
+        }
+
+        if (!$post->is_public) abort(404);
+
+        $post->views = $post->views + 1;
+        $post->save();
+        return view('blog', ['post' => $post]);
+    }
 
     public function getData(Request $request){
 
@@ -29,7 +51,10 @@ class PostController extends Controller
                 'content' => $post->content,
                 'slug' => $post->slug,
                 'tags' => $post->tags,
+                'subtitle' => $post->subtitle,
                 'categories' => $categories,
+                'cover_filename' => $post->cover_filename,
+                'token' => Hash::make($post->id . '_' . Auth::id()),
                 'visibility' => $post['is_public'],
                 'selected_categories' => $post->getCategoryIds(),
                 'updated_at' => $post->updated_at,                
@@ -42,6 +67,8 @@ class PostController extends Controller
             $title = 'Dokumen tanpa judul';
             $content = 'Dokumen tanpa isi';
             $slug = 'dokumen-tanpa-judul';
+            $subtitle = '';
+            $cover_filename = 'default.jpeg';
             $tags = [];
 
             //check if slug is already in the database. if exists, then add a random 5 character string to the end of the slug
@@ -54,6 +81,8 @@ class PostController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'slug' => $slug,
+                'subtitle' => $subtitle,
+                'cover_filename' => $cover_filename,
                 'tags' => $tags,
                 'is_public' => false,
                 'user_id' => Auth::id(),
@@ -66,6 +95,9 @@ class PostController extends Controller
                 'content' => $post->content,
                 'slug' => $post->slug,
                 'tags' => $post->tags,
+                'cover_filename' => $post->cover_filename,
+                'subtitle' => $post->subtitle,
+                'token' => Hash::make($post->id . '_' . Auth::id()),
                 'visibility' => $post['is_public'],
                 'categories' => $categories,
                 'selected_categories' => $post->getCategoryIds(),
@@ -75,6 +107,7 @@ class PostController extends Controller
     }
 
     public function autosave(Request $request){
+        //TODO: only change on difference
         $post = Post::find($request->id);
 
         if ($post->user_id !== Auth::id()) {
@@ -88,7 +121,9 @@ class PostController extends Controller
             $post->title = $request->title;
             $post->content = $request->content;
             $post->slug = $request->slug;
+            $post->subtitle = $request->subtitle;
             $post->tags = $request->tags;
+            $post->cover_filename = $request->cover_filename;
             $post['is_public'] = $request->visibility;
             $post->categories()->sync($request->categories);
             $post->save();
@@ -96,8 +131,11 @@ class PostController extends Controller
                 'id' => $post->id,
                 'title' => $post->title,
                 'content' => $post->content,
+                'token' => Hash::make($post->id . '_' . Auth::id()),
                 'slug' => $post->slug,
                 'tags' => $post->tags,
+                'cover_filename' => $post->cover_filename,
+                'subtitle' => $post->subtitle,
                 'visibility' => $post['is_public'],
                 'categories' => $post->getCategoryIds(),
                 'updated_at' => $post->updated_at,                
@@ -131,5 +169,33 @@ class PostController extends Controller
             'draft' => $draft,
         ], 200);
         
+    }
+
+    public function uploadImage(Request $request){
+
+        $file = $request->file('image')->store('public/images');
+
+        return [
+            'location' => $request->getSchemeAndHttpHost().'/storage/images/' . Str::afterLast($file, '/'),
+        ];
+    }
+
+    public function uploadCover(Request $request){
+
+        $post = Post::findOrFail($request->post_id);
+        $file = $request->file('file')->store('public/images/cover');
+        $filename = Str::afterLast($file, '/');
+        $oldFilename = $post->cover_filename;
+        $post = $post->update([
+            'cover_filename' => $filename,
+        ]);
+
+        if ($oldFilename !== 'default.jpeg'){
+            Storage::delete('public/images/cover/' . $oldFilename);
+        }
+
+        return [
+            'filename' => $filename,
+        ];
     }
 }

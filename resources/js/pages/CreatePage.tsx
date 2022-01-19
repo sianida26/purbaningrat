@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import idLocale from 'date-fns/locale/id'
 import { format } from 'date-fns'
 
+import { v4 as uuidv4 } from 'uuid'
+
 import { Editor } from '@tinymce/tinymce-react';
 import { Editor as EditorRef } from 'tinymce/tinymce'
 
@@ -13,6 +15,7 @@ import { BsFillEyeFill } from 'react-icons/bs';
 import Spinner from '../components/Spinner';
 import { useAxios } from '../providers/AxiosProvider'
 import { useConfig } from '../providers/ConfigProvider';
+import { useAuth } from '../providers/AuthProvider';
 
 interface Category {
     id: number;
@@ -30,16 +33,20 @@ enum StatusType {
 export default function CreatePage() {
 
     const editorRef = React.useRef<EditorRef | null>()
+    const coverButtonRef = React.useRef<HTMLInputElement | null>(null)
     const isEdit = location.pathname.split('/').pop() === 'edit'
     const navigate = useNavigate()
 
     const { axios } = useAxios()
+    const { auth } = useAuth()
     const { config, setConfig } = useConfig()
 
 
     const [addCategoryError, setAddCategoryError] = React.useState('')
+    const [accessToken, setAccessToken] = React.useState('')
     const [categories, setCategories] = React.useState<Category[]>([])
     const [content, setContent] = React.useState('')
+    const [cover, setCover] = React.useState('')
     const [inputCategory, setInputCategory] = React.useState('')
     const [inputTag, setInputTag] = React.useState('')
     const [isAddingCategory, setAddingCategory] = React.useState(false)
@@ -53,9 +60,12 @@ export default function CreatePage() {
     const [slug, setSlug] = React.useState('')
     const [statusMsg, setStatusMsg] = React.useState('')
     const [statusType, setStatusType] = React.useState(StatusType.LOADING)
+    const [subtitle, setSubtitle] = React.useState('')
+    const [initialValue, setInitialValue] = React.useState('')
     const [tags, setTags] = React.useState<string[]>([])
     const [title, setTitle] = React.useState('')
     const [updatedAt, setUpdatedAt] = React.useState(new Date())
+    const [uploadCoverMsg, setUploadCoverMsg] = React.useState('')
     const [visibility, setVisibility] = React.useState(false)
     
     //Initalize page
@@ -92,8 +102,7 @@ export default function CreatePage() {
 
             return () => clearTimeout(timer)
         }
-    }, [content, slug, title, selectedCategories, tags, visibility])
-
+    }, [content, slug, title, selectedCategories, tags, visibility, subtitle, cover])
     //Fetch uid, title, content, etc for initial data
     const fetchMetaData = async () => {
         setLoading(true)
@@ -103,9 +112,12 @@ export default function CreatePage() {
              * {
              *  id: number,
              *  title: string,
+             *  subtitle: string,
+             *  cover_filename: string,
              *  content: string,
              *  slug: string,
              *  tags: string[],
+             *  token: string,
              *  categories: {
              *    id: number,
              *    name: string
@@ -121,9 +133,13 @@ export default function CreatePage() {
             setSelectedCategories(response.data.selected_categories)
             setPostId(response.data.id)
             setTitle(response.data.title)
+            setSubtitle(response.data.subtitle)
             setContent(response.data.content)
+            setInitialValue(response.data.content)
             setUpdatedAt(new Date(response.data.updated_at))
             setVisibility(response.data.visibility)
+            setCover(response.data.cover_filename)
+            setAccessToken(response.data.token)
             editorRef.current?.setContent(response.data.content)
             setReady(true)
             setStatusType(StatusType.READY)
@@ -197,8 +213,53 @@ export default function CreatePage() {
         }
     }
 
+    const handleClickEditCover = () => {
+        coverButtonRef.current?.click()
+    }
+
     const handleEditorChange = (content: string) => {
         setContent(content)
+    }
+
+    const handleUploadCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+        e.target.value = ""
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('post_id', postId.toString())
+        try {
+            setUploadCoverMsg('Mengupload...')
+            const response = await axios({
+                url: '/post/uploadCover',
+                method: 'post',
+                data: formData,
+            })
+            setCover(response.data.filename)
+            setUploadCoverMsg('')
+        } catch (e) {
+            console.error(e)
+            setUploadCoverMsg('Gagal mengupload. Data tidak tersimpan. Silakan coba lagi')
+        }
+
+    }
+
+    const handleUploadImage = async (blob: Blob, filename: string, success: (url: string) => void, failure: (err: string) => void, progress?: (percent: number) => void) => {
+
+        try {
+            const formData = new FormData()
+            formData.append('image', blob, uuidv4() + '.' + filename.split('.').pop())
+            //response schema:  {location: string}
+            const response = await axios({
+                method: 'post',
+                url: '/post/uploadImage',
+                data: formData,
+            })
+            success(response.data.location)
+        }
+        catch {
+            failure('Terjadi kesalahan')
+        }
     }
 
     const sendAutosave = async () => {
@@ -216,8 +277,10 @@ export default function CreatePage() {
                 content,
                 slug,
                 visibility,
+                subtitle,
                 tags,
                 categories: selectedCategories,
+                cover_filename: cover,
             })
             setStatusType(StatusType.SAVED)
             setUpdatedAt(new Date(response.data.updated_at))
@@ -249,7 +312,7 @@ export default function CreatePage() {
 
                     {/* editor */}
                     <Editor
-                        initialValue=''
+                        initialValue={initialValue}
                         disabled={isLoading}
                         apiKey="lek1nfw6iogrsq1n56zxjao00dtcsii6bz58tiwwxvd785rc"
                         init={{
@@ -264,35 +327,39 @@ export default function CreatePage() {
                             autosave_restore_when_empty: false,
                             autosave_retention: '2m',
                             image_advtab: true,
-                            link_list: [
-                                { title: 'My page 1', value: 'https://www.tiny.cloud' },
-                                { title: 'My page 2', value: 'http://www.moxiecode.com' }
-                            ],
-                            image_list: [
-                                { title: 'My page 1', value: 'https://www.tiny.cloud' },
-                                { title: 'My page 2', value: 'http://www.moxiecode.com' }
-                            ],
-                            image_class_list: [
-                                { title: 'None', value: '' },
-                                { title: 'Some class', value: 'class-name' }
-                            ],
-                            importcss_append: true,
-                            file_picker_callback: function (callback, value, meta) {
-                                /* Provide file and text for the link dialog */
-                                if (meta.filetype === 'file') {
-                                callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
-                                }
-
-                                /* Provide image and alt text for the image dialog */
-                                if (meta.filetype === 'image') {
-                                callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
-                                }
-
-                                /* Provide alternative source and posted for the media dialog */
-                                if (meta.filetype === 'media') {
-                                callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
-                                }
+                            // link_list: [
+                            //     { title: 'My page 1', value: 'https://www.tiny.cloud' },
+                            //     { title: 'My page 2', value: 'http://www.moxiecode.com' }
+                            // ],
+                            // image_list: [
+                            //     { title: 'My page 1', value: 'https://www.tiny.cloud' },
+                            //     { title: 'My page 2', value: 'http://www.moxiecode.com' }
+                            // ],
+                            // image_class_list: [
+                            //     { title: 'None', value: '' },
+                            //     { title: 'Some class', value: 'class-name' }
+                            // ],
+                            // importcss_append: true,
+                            images_upload_url: '/api/admin/post/uploadImage',
+                            images_upload_handler: (blobInfo, success, failure, progress) => {
+                                handleUploadImage(blobInfo.blob(), blobInfo.filename() ,success, failure, progress)
                             },
+                            // file_picker_callback: function (callback, value, meta) {
+                            //     /* Provide file and text for the link dialog */
+                            //     if (meta.filetype === 'file') {
+                            //     callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+                            //     }
+
+                            //     /* Provide image and alt text for the image dialog */
+                            //     if (meta.filetype === 'image') {
+                            //     callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+                            //     }
+
+                            //     /* Provide alternative source and posted for the media dialog */
+                            //     if (meta.filetype === 'media') {
+                            //     callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+                            //     }
+                            // },
                             templates: [
                                 { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
                                 { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
@@ -306,7 +373,8 @@ export default function CreatePage() {
                             noneditable_noneditable_class: 'mceNonEditable',
                             toolbar_mode: 'sliding',
                             contextmenu: 'link image imagetools table',
-                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                            // content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                            inline_styles: true,
                         }}
                         onChange={(e) => handleEditorChange(e.target.getContent())}
                         onInit={(e, editor) => {editorRef.current = editor; content ? editor.setContent(content) : null}}
@@ -325,6 +393,7 @@ export default function CreatePage() {
                             {/* preview */}
                             <button 
                                 className="tw-py-2 tw-px-3 tw-rounded-md tw-shadow-md tw-flex tw-items-center tw-text-white tw-bg-stone-500 focus:tw-outline-none focus:tw-ring focus:tw-ring-offset-1 focus:tw-ring-stone-500 focus:tw-ring-opacity-50 disabled:tw-opacity-50"
+                                onClick={() => window.open(`/blog/${slug}?t=${accessToken}`, '_blank')}
                                 disabled={isLoading}
                             >
                                 <BsFillEyeFill className='tw-text-lg tw-mr-2' />
@@ -356,6 +425,18 @@ export default function CreatePage() {
 
                         <h2 className="tw-font-semibold tw-text-md tw-text-left">Pengaturan</h2>
 
+                        {/* subtitle */}
+                        <div className="tw-flex tw-flex-col tw-w-full">
+                            <span className="tw-text-sm">Subjudul</span>
+                            <input 
+                                className="tw-w-full tw-border-b tw-border-gray-500 focus:tw-caret-sky-500 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-border-b-2 disabled:tw-opacity-50" 
+                                disabled={isLoading}
+                                onChange={(e) => setSubtitle(e.target.value)}
+                                placeholder="Boleh kosong"
+                                value={subtitle}
+                            />
+                        </div>
+
                         {/* slug */}
                         <div className="tw-flex tw-flex-col tw-w-full">
                             <span className="tw-text-sm">Alamat URL</span>
@@ -379,6 +460,28 @@ export default function CreatePage() {
                             />
                             <label htmlFor="visibility" className="tw-my-auto tw-select-none tw-ml-2">Diakses publik</label>
                         </div>
+                    </div>
+
+                    {/* cover */}
+                    <div className="tw-rounded-md tw-shadow-lg tw-py-4 tw-px-4 tw-bg-white tw-flex tw-gap-2 tw-justify-center tw-flex-col tw-text-sm">
+                        <h2 className="tw-font-semibold tw-text-md tw-text-left">Gambar sampul</h2>
+                        {
+                            cover ? <div className="tw-aspect-video tw-w-full tw-relative tw-group">
+                                <img className="tw-aspect-video tw-w-full" src={`/storage/images/cover/${cover}`} />
+                                <div className={`tw-w-full tw-h-full tw-bg-black tw-bg-opacity-75 tw-items-center tw-justify-center tw-absolute tw-top-0 tw-left-0 tw-flex-col ${uploadCoverMsg? 'tw-flex' : 'tw-hidden group-hover:tw-flex'}`}>
+                                    <button 
+                                        onClick={handleClickEditCover}
+                                        className="tw-bg-transparent tw-rounded-md tw-px-3 tw-py-2 tw-border tw-border-white tw-text-sm tw-text-white hover:tw-bg-white hover:tw-text-black focus:tw-outline-none"
+                                    >
+                                        Ganti cover
+                                    </button>
+                                    <span className="tw-text-sm tw-text-white">{uploadCoverMsg}</span>
+                                    <input className="tw-hidden" type="file" ref={coverButtonRef} onChange={handleUploadCover} accept="image/*" />
+                                </div>
+                            </div>
+                            : null //TODO: tampilkan button untuk tambah cover ketika cover tidak tersedia
+                        }
+                        
                     </div>
 
                     {/* categories */}
