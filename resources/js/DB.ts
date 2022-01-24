@@ -15,7 +15,7 @@ export default class DB extends Dexie{
     auth: Dexie.Table<IAuthTable, string>
 
     constructor(){
-        super("lemahteles")
+        super("purbaningrat")
 
         this.version(2).stores({
             auth: 'key, value',
