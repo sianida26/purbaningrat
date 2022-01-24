@@ -1,16 +1,7 @@
-<div class="tw-w-screen tw-relative tw-min-h-[4rem]">
-
-    <div class="tw-w-screen tw-shadow-md tw-flex tw-justify-between tw-py-3 tw-px-4 lg:tw-px-8 tw-top-0 tw-fixed tw-bg-white tw-transition-all tw-duration-200 tw-ease-in-out tw-items-center" id="header-mobile"{{--  style="z-index: 700" --}}>
-        <span>
-            <img class="tw-w-36" src="{{asset('storage/logos/logo.svg')}}" />
-        </span>
-        <span id="icon-drawer" class="bi bi-list tw-text-2xl"></span>
-    </div>
-   
-</div>
+<div class="tw-w-screen tw-relative tw-min-h-[4rem]" id="header"></div>
 
 @push('scripts')
-    <script>
+    {{-- <script>
         //no jq
         const header = document.getElementById('header-mobile');
         let lastScrollTop = 0;
@@ -24,5 +15,8 @@
             }
             lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         }, false);
-    </script>
+    </script> --}}
+    <script src="{{mix('js/manifest.js')}}"></script>
+    <script src="{{mix('js/vendor.js')}}"></script>
+    <script src="{{mix('js/header.js')}}"></script>
 @endpush

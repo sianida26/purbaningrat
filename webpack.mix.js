@@ -18,3 +18,6 @@ const mix = require('laravel-mix');
     ])
     .postCss("resources/css/roboto.css", "public/css/roboto.css")
     .postCss("resources/css/bootstrap-icons.css", "public/css/bootstrap-icons.css")
+
+mix.ts('resources/js/blog/header.tsx', 'public/js/header.js')
+    .extract(['react'])

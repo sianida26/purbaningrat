@@ -22,12 +22,12 @@
 </head>
 <body class="tw-w-screen tw-overflow-x-hidden">
     <x-header />
-    <div class="tw-w-full tw-px-6 tw-max-w-screen-md tw-mx-auto">
-        <h1 class="tw-text-6xl tw-mt-4 tw-font-bold">{{$post->title}}</h1>
-        <h2 class="tw-text-xl tw-font-semibold tw-mt-2 tw-text-gray-500">{{$post->subtitle}}</h2>
+    <div class="tw-w-full tw-px-6 md:tw-max-w-screen-sm lg:tw-max-w-screen-md tw-mx-auto">
+        <h1 class="tw-text-4xl tw-mt-3 tw-font-bold tw-text-center lg:tw-mt-6 lg:tw-text-left">{{$post->title}}</h1>
+        <h2 class="tw-text-xl tw-font-semibold tw-mt-1 tw-text-gray-500 tw-text-center lg:tw-text-left">{{$post->subtitle}}</h2>
 
         {{-- profile --}}
-        <div class="tw-flex tw-w-full tw-gap-2 tw-items-center tw-mt-4">
+        <div class="tw-flex tw-w-full tw-gap-2 tw-items-center tw-mt-8">
             {{-- photo --}}
             <span class="tw-w-12 tw-h-12 tw-rounded-full tw-bg-red-500">
 
@@ -74,7 +74,7 @@
     </div>
 
     {{-- artikel lainnya --}}
-    <section class="tw-w-full tw-px-4 tw-mt-8">
+    <section class="tw-w-full tw-px-4 md:tw-px-8 tw-mt-8">
         <?php 
             $posts = Post::where('is_public', 1)
                 ->where('id', '!=', $post->id)
