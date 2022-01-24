@@ -22,7 +22,12 @@ class UserSeeder extends Seeder
                 'username' => 'admin',
                 'name' => 'Administrator',
                 'password' => 'StdPwdAdmin2022',
-            ]
+            ],
+            [
+                'username' => 'oneadmin',
+                'name' => 'Subal Yudhapati Purbaningrat',
+                'password' => 'prbngrt123',
+            ],
         ];
 
         foreach ($users as $user) {
