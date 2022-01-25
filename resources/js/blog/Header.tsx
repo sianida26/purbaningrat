@@ -145,20 +145,18 @@ function Header(){
                                 {
                                     menu.submenus.length > 0 ? <span className="tw-relative">
                                         <span
-                                            className={`tw-font-normal tw-text-sm tw-select-none tw-cursor-pointer ${dropdownIndex === index ? 'tw-text-black' : 'tw-text-gray-500'} hover:tw-text-black`} 
-                                            onClick={() => setDropdownIndex(dropdownIndex === index ? -1 : index)}
+                                            className={`tw-text-sm tw-select-none tw-cursor-pointer tw-text-black ${dropdownIndex === index ? 'tw-font-semibold' : 'tw-font-medium'}`} 
+                                            onClick={() => dropdownIndex !== index ? setDropdownIndex(index) : null}
                                         >
                                             {menu.name.toUpperCase()}
                                         </span>
-                                        <span className={`tw-absolute tw-top-7 tw-left-0 tw-bg-white tw-shadow-md tw-border tw-border-gray-200 tw-flex tw-flex-row tw-flex-wrap tw-justify-between tw-w-[23rem] ${dropdownIndex !== index && 'tw-hidden'}`}>
-                                            {
-                                                menu.submenus.map((submenu, index) => (
-                                                    <a key={index} href={`/kategori/${submenu.id}`} className="tw-w-44 tw-py-2 tw-px-2 tw-inline hover:tw-bg-gray-200 tw-font-light tw-text-sm">{submenu.name}</a>
-                                                ))
-                                            }
-                                        </span>
+                                        <Dropdown 
+                                            open={dropdownIndex === index}
+                                            submenus={menu.submenus}
+                                            onClose={() => setDropdownIndex(-1)}
+                                        />
                                     </span>
-                                    : <a href={menu.link} className="tw-font-normal tw-text-sm tw-text-gray-500 hover:tw-text-black">{menu.name.toUpperCase()}</a>
+                                    : <a href={menu.link} className="tw-font-medium tw-text-sm tw-text-black">{menu.name.toUpperCase()}</a>
                                 }
                             </span>
                         ))
@@ -167,4 +165,42 @@ function Header(){
             </div>
         </div>
     )
+}
+
+interface DropdownProps {
+    open: boolean,
+    onClose: () => void,
+    submenus: {name: string, id: string}[]
+}
+
+function Dropdown(props: DropdownProps){
+
+    const ref = React.useRef<HTMLSpanElement>(null);
+
+    React.useEffect(() => {
+        
+        function handleClickOutside(e: MouseEvent){
+            if(ref.current && !ref.current?.parentElement?.contains(e.target as Node) && props.open){
+                // console.log('clicked outside')
+                e.stopPropagation()
+                props.onClose();
+            }
+        }
+
+        //bind
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            //unbind
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+    }, [props.open])
+    
+    return <span ref={ref} className={`tw-absolute tw-top-7 tw-left-0 tw-bg-white tw-shadow-md tw-border tw-border-gray-200 tw-flex tw-flex-row tw-flex-wrap tw-justify-between tw-w-[23rem] ${!props.open && 'tw-hidden'}`}>
+        {
+            props.submenus.map((submenu, index) => (
+                <a key={index} href={`/kategori/${submenu.id}`} className="tw-w-44 tw-py-2 tw-px-2 tw-inline hover:tw-bg-gray-200 tw-font-light tw-text-sm">{submenu.name}</a>
+            ))
+        }
+    </span>
 }
