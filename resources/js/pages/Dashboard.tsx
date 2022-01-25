@@ -3,7 +3,7 @@ import React from 'react'
 export default function Dashboard() {
     return (
         <div>
-            Aku Dashboard
+            Dashboard coming soon..
         </div>
     )
 }

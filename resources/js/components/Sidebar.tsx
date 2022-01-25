@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { BsFileText } from 'react-icons/bs'
+import { MdOutlineDashboard } from 'react-icons/md'
 
 import zIndexes from '../zIndexes'       
 import { getUrl } from '../routes'
@@ -12,6 +13,7 @@ interface Props{
 }
 
 const navs = [
+    {icon: <MdOutlineDashboard />, title: 'Dashboard', url: getUrl('dashboard')},
     {icon: <BsFileText />, title: 'Halaman', url: getUrl('pages')},
 ]
 
@@ -23,15 +25,15 @@ export default function Sidebar({open, onClose}: Props) {
             {/* sidebar */}
             <div className={`tw-fixed tw-w-72 tw--left-72 tw-bg-white tw-shadow-md tw-h-screen tw-flex tw-flex-col tw-py-4 tw-border-r tw-border-gray-700 tw-transition-transform tw-ease-in-out tw-duration-500 tw-transform ${open && 'tw-translate-x-72'}`} style={{zIndex: zIndexes.sidebar}}>
                 {/* logo */}
-                <div className="tw-flex tw-justify-between tw-items-center tw-mb-3">
-                    Logo
+                <div className="tw-flex tw-justify-between tw-items-center tw-mb-6 tw-px-10">
+                    <img src="/storage/logos/logo-black.svg" alt="Logo" className="tw-w-full" />
                 </div>
 
                 {/* List blog */}
                 <div className="tw-flex tw-flex-col tw-mb-3 tw-divide-x">
 
                     {
-                        navs.map(nav => <Link key={nav.title} to={nav.url} className="tw-flex tw-items-center tw-py-3 tw-border-y tw-border-gray-100 hover:tw-bg-gray-200 tw-px-4">
+                        navs.map(nav => <Link onClick={() => onClose()} key={nav.title} to={nav.url} className="tw-flex tw-items-center tw-py-3 tw-border-y tw-border-gray-100 hover:tw-bg-gray-200 tw-px-4">
                             <span className="tw-mr-2 tw-text-2xl">
                                 {nav.icon}
                             </span>
