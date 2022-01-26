@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { BsPersonCircle } from 'react-icons/bs'
+import { BsPersonCircle, BsPersonFill } from 'react-icons/bs'
 import { HiOutlineMenuAlt2 } from 'react-icons/hi'
 import { FaPersonBooth } from 'react-icons/fa'
 
@@ -29,6 +29,12 @@ export default function Header(props: Props) {
 
                 {/* tooltip */}
                 <div className="tw-absolute tw-top-10 tw-right-0 tw-w-36 tw-py-2 tw-border tw-rounded-md tw-shadow-md tw-hidden group-hover:tw-flex tw-flex-col tw-bg-white tw-text-sm" style={{zIndex: zIndexes.headerTooltip}}>
+                    {/* logout */}
+                    <Link to={getUrl('profile')} className="tw-flex tw-px-4 tw-py-2 tw-items-center hover:tw-bg-gray-300">
+                        <BsPersonFill className="tw-mr-2" />
+                        Profil
+                    </Link>
+
                     {/* logout */}
                     <Link to={getUrl('logout')} className="tw-flex tw-px-4 tw-py-2 tw-items-center hover:tw-bg-gray-300">
                         <FaPersonBooth className="tw-mr-2" />

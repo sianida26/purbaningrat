@@ -51,6 +51,11 @@ function Header(props) {
       zIndex: _zIndexes__WEBPACK_IMPORTED_MODULE_1__["default"].headerTooltip
     }
   }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
+    to: (0,_routes__WEBPACK_IMPORTED_MODULE_2__.getUrl)('profile'),
+    className: "tw-flex tw-px-4 tw-py-2 tw-items-center hover:tw-bg-gray-300"
+  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_icons_bs__WEBPACK_IMPORTED_MODULE_5__.BsPersonFill, {
+    className: "tw-mr-2"
+  }), "Profil"), react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
     to: (0,_routes__WEBPACK_IMPORTED_MODULE_2__.getUrl)('logout'),
     className: "tw-flex tw-px-4 tw-py-2 tw-items-center hover:tw-bg-gray-300"
   }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaPersonBooth, {

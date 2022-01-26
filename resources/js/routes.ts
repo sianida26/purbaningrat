@@ -13,6 +13,7 @@ const routes = [
     {name: 'pages', url: 'halaman', component: Pages},
     {name: 'pages.create', url: 'halaman/tambah', component: CreatePage},
     {name: 'pages.edit', url: 'halaman/edit', component: CreatePage},
+    {name: 'profile', url: 'profil', component: Pages},
 ]
 
 export default routes
