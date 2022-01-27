@@ -20,6 +20,7 @@ export default function App() {
     }, [])
 
     const boot = () => {
+        //retrieve auth state from local storage
         db.auth.bulkGet(['auth_token', 'name', 'username', 'role'])
             .then(([token, name, username]) => {
                 setAuthState({
@@ -29,6 +30,8 @@ export default function App() {
                 })
                 setBooting(false)
             })
+        
+        
     }
 
     return isBooting ? <Splash /> : (

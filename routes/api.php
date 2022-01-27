@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,11 @@ Route::middleware('auth:api')->group(function(){
             Route::post('getData', [PostController::class, 'getData']);
             Route::post('uploadImage', [PostController::class, 'uploadImage']);
             Route::post('uploadCover', [PostController::class, 'uploadCover']);
+        });
+
+        Route::prefix('profil')->group(function(){
+
+            Route::get('getData', [ProfileController::class, 'getData']);
         });
     });
 });
