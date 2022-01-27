@@ -18,7 +18,7 @@ export default function App() {
         <div className="tw-w-screen tw-min-h-screen tw-relative tw-flex tw-flex-col" style={{zIndex: zIndexes.base}}>
             <Sidebar open={sidebarOpen} onClose={toggleSidebar} />
             <Header toggleSidebar={toggleSidebar} />
-            <div className="tw-w-full tw-h-full tw-overflow-x-hidden tw-overflow-y-auto tw-p-8 tw-bg-gray-100 tw-flex-grow tw-flex tw-flex-col">
+            <div className="tw-w-full tw-h-full tw-overflow-x-hidden tw-overflow-y-auto tw-px-4 tw-py-8 md:tw-px-8 tw-bg-gray-100 tw-flex-grow tw-flex tw-flex-col">
                 <Outlet />
             </div>
         </div>

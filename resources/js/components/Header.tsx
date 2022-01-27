@@ -19,7 +19,7 @@ export default function Header(props: Props) {
     const { auth } = useAuth()
 
     return (
-        <div className='tw-h-12 tw-w-full tw-border-b tw-shadow-md tw-px-8 tw-flex tw-justify-between tw-items-center' style={{zIndex: zIndexes.header}}>
+        <div className='tw-h-12 tw-w-full tw-border-b tw-shadow-md tw-px-4 md:tw-px-8 tw-flex tw-justify-between tw-items-center' style={{zIndex: zIndexes.header}}>
             <div className='tw-flex tw-items-center tw-justify-start'>
                 <HiOutlineMenuAlt2 className='tw-text-2xl tw-mr-2' onClick={props.toggleSidebar} />
             </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import Dashboard from './pages/Dashboard';
 import Logout from './pages/Logout';
 import Pages from './pages/Pages';
+import Profile from './pages/Profile';
 import CreatePage from './pages/CreatePage';
 
 import config from './config';
@@ -13,7 +14,7 @@ const routes = [
     {name: 'pages', url: 'halaman', component: Pages},
     {name: 'pages.create', url: 'halaman/tambah', component: CreatePage},
     {name: 'pages.edit', url: 'halaman/edit', component: CreatePage},
-    {name: 'profile', url: 'profil', component: Pages},
+    {name: 'profile', url: 'profil', component: Profile},
 ]
 
 export default routes

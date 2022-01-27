@@ -32,7 +32,7 @@ function Header(props) {
       auth = _useAuth.auth;
 
   return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: 'tw-h-12 tw-w-full tw-border-b tw-shadow-md tw-px-8 tw-flex tw-justify-between tw-items-center',
+    className: 'tw-h-12 tw-w-full tw-border-b tw-shadow-md tw-px-4 md:tw-px-8 tw-flex tw-justify-between tw-items-center',
     style: {
       zIndex: _zIndexes__WEBPACK_IMPORTED_MODULE_1__["default"].header
     }
@@ -237,7 +237,7 @@ function App() {
   }), react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_1__["default"], {
     toggleSidebar: toggleSidebar
   }), react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "tw-w-full tw-h-full tw-overflow-x-hidden tw-overflow-y-auto tw-p-8 tw-bg-gray-100 tw-flex-grow tw-flex tw-flex-col"
+    className: "tw-w-full tw-h-full tw-overflow-x-hidden tw-overflow-y-auto tw-px-4 tw-py-8 md:tw-px-8 tw-bg-gray-100 tw-flex-grow tw-flex tw-flex-col"
   }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Outlet, null)));
 }
 
