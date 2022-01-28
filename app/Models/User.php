@@ -49,4 +49,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    /**
+     * The author that belongs to the user.
+     */
+    public function author()
+    {
+        return $this->hasOne(Author::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Author;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -31,10 +32,15 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            User::create([
+            $model = User::create([
                 'name' => $user['name'],
                 'username' => $user['username'],
                 'password' => Hash::make($user['password']),
+            ]);
+
+            $model->author()->create([
+                'location' => '',
+                'description' => '',
             ]);
         }
     }
