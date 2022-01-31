@@ -55,6 +55,7 @@ Route::middleware('auth:api')->group(function(){
 
             Route::get('getData', [ProfileController::class, 'getData']);
             Route::post('changePhoto', [ProfileController::class, 'changePhoto']);
+            Route::post('changeData', [ProfileController::class, 'changeData']);
         });
     });
 });

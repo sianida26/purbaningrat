@@ -112,9 +112,9 @@ export default function Pages() {
     }
 
     return (
-        <div className="tw-w-full tw-px-4 tw-flex-grow">
+        <div className="tw-w-full tw-px-2 md:tw-px-4 tw-flex-grow">
             {/* title */}
-            <h1 className="tw-text-3xl tw-font-semibold">Halaman Anda</h1>
+            <h1 className="tw-text-xl md:tw-text-3xl tw-font-semibold">Halaman Anda</h1>
 
             {/* card */}
             <div className="tw-w-full tw-rounded-md tw-shadow-lg tw-py-4 tw-px-4 tw-bg-white tw-mt-4 tw-h-full">
@@ -122,7 +122,7 @@ export default function Pages() {
                 {/* add button */}
                 <Link to={getUrl('pages.create')} className="tw-px-3 tw-py-2 tw-bg-green-600 tw-text-white tw-rounded-md tw-inline-flex tw-gap-2 tw-items-center tw-text-sm tw-font-medium tw-shadow-md focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-green-600 focus:tw-ring-offset-1">
                     <BsPlusLg className="" />
-                    TAMBAH HALAMAN
+                    <span className="tw-text-sm">TAMBAH HALAMAN</span>
                 </Link>
 
                 {/* tabs */}

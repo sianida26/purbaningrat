@@ -33,4 +33,20 @@ class ProfileController extends Controller
             'photo' => $user->author->profile_photo_filename ? $user->author->profile_photo_filename : 'default.jpeg',
         ];
     }
+
+    public function changeData(Request $request){
+        $user = Auth::user();
+
+        $user->name = $request->name;
+        $user->author->location = $request->location;
+        $user->author->description = $request->bio;
+        $user->author->save();
+
+        return [
+            'photo' => $user->author->profile_photo_filename ? $user->author->profile_photo_filename : 'default.jpeg',
+            'name' => $user->name,
+            'location' => $user->author->location,
+            'bio' => $user->author->description,
+        ];
+    }
 }

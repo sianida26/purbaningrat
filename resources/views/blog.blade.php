@@ -29,9 +29,7 @@
         {{-- profile --}}
         <div class="tw-flex tw-w-full tw-gap-2 tw-items-center tw-mt-8">
             {{-- photo --}}
-            <span class="tw-w-12 tw-h-12 tw-rounded-full tw-bg-red-500">
-
-            </span>
+            <img class="tw-w-12 tw-h-12 tw-rounded-full tw-object-cover" src="/storage/profiles/{{$post->user->author->getPPFilename()}}">
             <div class="tw-flex tw-flex-col tw-text-sm">
                 <p class="">{{$post->user->name}}</p>
                 <p class="tw-text-gray-700">13 hari yang lalu <b>&middot;</b> {{$post->getReadTime()}} menit baca</p>
@@ -61,14 +59,12 @@
         {{-- author --}}
         <div class="tw-flex tw-w-full tw-gap-2 tw-items-center tw-mt-4">
             {{-- profile photo --}}
-            <span class="tw-w-16 tw-h-16 tw-rounded-full tw-bg-red-500">
-                {{-- TODO: ganti jadi gambar profil autor --}}&nbsp;
-            </span>
+            <img class="tw-w-16 tw-h-16 tw-rounded-full tw-object-cover" src="/storage/profiles/{{$post->user->author->getPPFilename()}}">
 
             <div class="tw-flex tw-flex-col">
                 <p class="tw-font-medium">{{$post->user->name}}</p>
                 {{-- TODO: ganti dengan informasi autor --}}
-                <p class="tw-text-gray-700 tw-text-sm tw-mt-2">Pengajar di random university</p> 
+                <p class="tw-text-gray-700 tw-text-sm tw-mt-2">{{$post->user->author->description}}</p> 
             </div>
         </div>
     </div>

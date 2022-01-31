@@ -94,9 +94,9 @@ export default function Profile() {
 			<div className="tw-w-full tw-flex tw-flex-col">
 				<span className="tw-text-sm tw-text-gray-600 tw-mt-4">Nama</span>
 				<input 
-				onChange={(e) => setName(e.target.value)}
-				value={name}
-				className="tw-border-b tw-py-2 focus:tw-outline-none focus:tw-border-b-2 focus:tw-border-sky-500" 
+					onChange={(e) => setName(e.target.value)}
+					value={name}
+					className="tw-border-b tw-py-2 focus:tw-outline-none focus:tw-border-b-2 focus:tw-border-sky-500" 
 				/>
 			</div>
 
