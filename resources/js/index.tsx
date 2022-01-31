@@ -1,4 +1,5 @@
 import React from 'react'
+import { SnackbarProvider } from 'notistack';
 
 import {render} from 'react-dom'
 
@@ -9,13 +10,15 @@ import ConfigProvider from './providers/ConfigProvider'
 
 render(
     <React.StrictMode>
-        <AuthProvider>
-            <AxiosProvider>
-                <ConfigProvider>
-                    <App />
-                </ConfigProvider>
-            </AxiosProvider>
-        </AuthProvider>
+        <SnackbarProvider>
+            <AuthProvider>
+                <AxiosProvider>
+                    <ConfigProvider>
+                        <App />
+                    </ConfigProvider>
+                </AxiosProvider>
+            </AuthProvider>
+        </SnackbarProvider>
     </React.StrictMode>
 , document.getElementById('app')
 );

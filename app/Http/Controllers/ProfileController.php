@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -16,6 +17,20 @@ class ProfileController extends Controller
             'name' => $user->name,
             'location' => $user->author->location,
             'bio' => $user->author->description,
+        ];
+    }
+
+    public function changePhoto(Request $request){
+        $user = Auth::user();
+
+        //save photo
+        $file = $request->file('file')->store('public/profiles');
+        $filename = Str::afterLast($file, '/');
+        $user->author->profile_photo_filename = $filename;
+        $user->author->save();
+
+        return [
+            'photo' => $user->author->profile_photo_filename ? $user->author->profile_photo_filename : 'default.jpeg',
         ];
     }
 }
