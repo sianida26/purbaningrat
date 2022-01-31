@@ -8,5 +8,4 @@
 !logos/**
 !images/
 !profiles/
-!profiles/*
-!profiles/**
+!profiles/default.jpeg
