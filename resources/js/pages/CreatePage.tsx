@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Editor } from '@tinymce/tinymce-react';
 import { Editor as EditorRef } from 'tinymce/tinymce'
 
-import { BsFillEyeFill } from 'react-icons/bs';
+import { BsFillEyeFill, BsFillTrashFill } from 'react-icons/bs';
 // import { RiSendPlaneFill } from 'react-icons/ri';
 
 import Spinner from '../components/Spinner';
@@ -217,6 +217,19 @@ export default function CreatePage() {
         coverButtonRef.current?.click()
     }
 
+    const handleDelete = async () => {
+        try{
+            setLoading(true)
+            const response = await axios({
+                method: 'post',
+                url: '/post/delete',
+                data: {
+                    id: 
+                }
+            })
+        }
+    }
+
     const handleEditorChange = (content: string) => {
         setContent(content)
     }
@@ -398,6 +411,16 @@ export default function CreatePage() {
                             >
                                 <BsFillEyeFill className='tw-text-lg tw-mr-2' />
                                 Preview
+                            </button>
+
+                            {/* hapus */}
+                            <button 
+                                className="tw-py-2 tw-px-3 tw-rounded-md tw-flex tw-items-center tw-text-red-500 tw-bg-white tw-border-red-500 tw-border focus:tw-outline-none focus:tw-ring focus:tw-ring-offset-1 focus:tw-ring-red-500 focus:tw-ring-opacity-50 focus:tw-bg-red-500 focus:tw-text-white disabled:tw-opacity-50 hover:tw-bg-red-500 hover:tw-text-white"
+                                onClick={handleDelete}
+                                disabled={isLoading}
+                            >
+                                <BsFillTrashFill className='tw-text-lg tw-mr-2' />
+                                Hapus
                             </button>
 
                             {/* publish */}

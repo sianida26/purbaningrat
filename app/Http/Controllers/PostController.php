@@ -151,6 +151,8 @@ class PostController extends Controller
                     'id' => $post->id,
                     'title' => $post->title,
                     'views' => $post->views,
+                    'slug' => $post->slug,
+                    'token' => Hash::make($post->id . '_' . Auth::id()),
                     'is_public' => $post->is_public,
                     'updated_at' => $post->updated_at,
                 ];

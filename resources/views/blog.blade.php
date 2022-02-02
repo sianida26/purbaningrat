@@ -20,9 +20,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body class="tw-w-screen tw-overflow-x-hidden">
+<body class="tw-w-screen tw-overflow-x-hidden tw-min-h-screen tw-relative">
     <x-header />
-    <div class="tw-w-full tw-px-6 md:tw-max-w-screen-sm lg:tw-max-w-screen-md tw-mx-auto">
+    <div class="tw-w-full tw-px-6 md:tw-max-w-screen-sm lg:tw-max-w-screen-md tw-mx-auto tw-min-h-[calc(100vh-18rem)]">
         <h1 class="tw-text-4xl tw-mt-3 tw-font-bold tw-text-center lg:tw-mt-6 lg:tw-text-left">{{$post->title}}</h1>
         <h2 class="tw-text-xl tw-font-semibold tw-mt-1 tw-text-gray-500 tw-text-center lg:tw-text-left">{{$post->subtitle}}</h2>
 
@@ -96,7 +96,7 @@
         @endif
     </section>
 
-    <footer class="tw-w-full tw-bg-zinc-900 tw-flex tw-flex-col tw-items-center tw-justify-center tw-py-12 tw-px-4 tw-mt-8">
+    <footer class="tw-w-full tw-bg-zinc-900 tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-56 tw-px-4 tw-mt-8">
         
         <div class="tw-flex tw-gap-2 tw-text-lg">
             <a class="bi bi-youtube tw-text-[#ff0a00]" href="#"></a>

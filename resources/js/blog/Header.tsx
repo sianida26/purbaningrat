@@ -17,26 +17,21 @@ function Header(){
         {
             name: 'Interval',
             submenus: [
-                //Primer, Kilatan, Mata Angin, Macapat, Elemen, Tegese Tembung, Catur, Bilik, Jangka, Astronomi, Mayapada, Metafisika
+                //Primer, Kilatan, Mata Angin, Mocopat, Elemen, Tegese Tembung, Catur, Bilik, Jangka, Astronomi, Mayapada, Metafisika
                 {name: 'Primer', id: 'primer'},
-                {name: 'Kilatan', id: 'kilatan'},
-                {name: 'Mata Angin', id: 'mata-angin'},
-                {name: 'Macapat', id: 'macapat'},
+                {name: 'Literasi', id: 'literasi'},
+                {name: 'Mocopat', id: 'mocopat'},
                 {name: 'Elemen', id: 'elemen'},
                 {name: 'Tegese Tembung', id: 'tegese-tembung'},
                 {name: 'Catur', id: 'catur'},
-                {name: 'Bilik', id: 'bilik'},
-                {name: 'Jangka', id: 'jangka'},
                 {name: 'Astronomi', id: 'astronomi'},
-                {name: 'Mayapada', id: 'mayapada'},
-                {name: 'Metafisika', id: 'metafisika'},
             ]
         },
         {
             name: 'Filsafat',
             submenus: [
                 //Gerakan Literasi, Eksperimen Pikiran, Penulis Obskur
-                {name: 'Gerakan Literasi', id: 'gerakan-literasi'},
+                {name: 'Pengantar', id: 'pengantar'},
                 {name: 'Eksperimen Pikiran', id: 'eksperimen-pikiran'},
                 {name: 'Penulis Obskur', id: 'penulis-obskur'},
             ]
@@ -47,8 +42,8 @@ function Header(){
                 //Tanah Jawa, Nusantara, Kronologi, Wayang Kulit
                 {name: 'Tanah Jawa', id: 'tanah-jawa'},
                 {name: 'Nusantara', id: 'nusantara'},
-                {name: 'Kronologi', id: 'kronologi'},
-                {name: 'Wayang Kulit', id: 'wayang-kulit'},
+                {name: 'Kronologis', id: 'kronologis'},
+                {name: 'Luar Negeri', id: 'luar-negeri'},
             ]
         },
         {
@@ -63,6 +58,7 @@ function Header(){
                 {name: 'Puisi', id: 'puisi'},
                 {name: 'Lukisan', id: 'lukisan'},
                 {name: 'Sketsa', id: 'sketsa'},
+                {name: 'Novel', id: 'novel'},
             ]
         }
     ]

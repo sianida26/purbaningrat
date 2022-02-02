@@ -49,6 +49,7 @@ Route::middleware('auth:api')->group(function(){
             Route::post('getData', [PostController::class, 'getData']);
             Route::post('uploadImage', [PostController::class, 'uploadImage']);
             Route::post('uploadCover', [PostController::class, 'uploadCover']);
+            Route::post('delete', [PostController::class, 'deletePost']);
         });
 
         Route::prefix('profil')->group(function(){

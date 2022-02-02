@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip'
 
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 import { DataGrid, GridColDef, GridRenderCellParams, GridValueFormatterParams } from '@mui/x-data-grid'
 
@@ -25,6 +26,8 @@ interface Post {
     id: number,
     no: number,
     title: string,
+    slug: string,
+    token: string,
     views: number,
     updated_at: string,
 }
@@ -70,7 +73,7 @@ export default function Pages() {
                 return <div className="tw-flex tw-gap-2">
                     {/* lihat */}
                     <Tooltip title="Lihat">
-                        <IconButton onClick={() => {/* TODO: navigate to preview */}} color='success'>
+                        <IconButton onClick={() => window.open(`/blog/${params.row.slug}?t=${params.row.token}`, '_blank')} color='success'>
                             <VisibilityIcon />
                         </IconButton>
                     </Tooltip>
