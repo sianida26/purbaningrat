@@ -224,9 +224,11 @@ export default function CreatePage() {
                 method: 'post',
                 url: '/post/delete',
                 data: {
-                    id: 
+                    id: postId,
                 }
             })
+        } catch (e) {
+            
         }
     }
 
