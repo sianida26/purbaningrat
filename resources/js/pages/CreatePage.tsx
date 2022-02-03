@@ -1,8 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { AxiosError } from 'axios'
+
 import idLocale from 'date-fns/locale/id'
 import { format } from 'date-fns'
+
+import { useSnackbar } from 'notistack'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -40,6 +44,7 @@ export default function CreatePage() {
     const { axios } = useAxios()
     const { auth } = useAuth()
     const { config, setConfig } = useConfig()
+    const { enqueueSnackbar } = useSnackbar()
 
 
     const [addCategoryError, setAddCategoryError] = React.useState('')
@@ -227,8 +232,13 @@ export default function CreatePage() {
                     id: postId,
                 }
             })
-        } catch (e) {
-            
+            enqueueSnackbar('Halaman berhasil dihapus!', {variant: 'success'})
+            navigate(-1)
+        } catch (e: any) {
+            console.log(e)
+            enqueueSnackbar(`Terjadi kesalahan ${e.response?.status && `(${e.response?.status})`}`, {variant: 'error'})
+        } finally {
+            setLoading(false)
         }
     }
 

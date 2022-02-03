@@ -200,4 +200,17 @@ class PostController extends Controller
             'filename' => $filename,
         ];
     }
+
+    public function deletePost(Request $request){
+
+        $post = Post::findOrFail($request->id);
+        //check if the post is owned by the user
+        if ($post->user_id !== Auth::id()){
+            return response()->json([
+                'message' => 'Anda tidak berhak untuk menghapus postingan ini'
+            ], 401);
+        }
+
+        $post->delete();
+    }
 }
