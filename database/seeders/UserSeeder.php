@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
         foreach ($users as $user) {
             //if user exists, skip
             if (User::where('username', $user['username'])->exists()) {
+                $this->command->warn("User {$user['username']} already exists");
                 continue;
             }
             $model = User::create([
@@ -46,6 +47,8 @@ class UserSeeder extends Seeder
                 'location' => '',
                 'description' => '',
             ]);
+
+            $this->command->info("User {$user['username']} created");
         }
     }
 }
