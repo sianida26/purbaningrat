@@ -32,6 +32,10 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
+            //if user exists, skip
+            if (User::where('username', $user['username'])->exists()) {
+                continue;
+            }
             $model = User::create([
                 'name' => $user['name'],
                 'username' => $user['username'],
