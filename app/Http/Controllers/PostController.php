@@ -7,6 +7,8 @@ use App\Models\Category;
 
 use Carbon\Carbon;
 
+use Debugbar;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,14 +20,18 @@ class PostController extends Controller
     public function view(Request $request){
 
         $post = Post::where('slug', $request->slug)->firstOrFail();
+        Debugbar::info($request->slug);
 
         //check if has token
         if($request->has('t')){
             
+            Debugbar::info($request->t);
+            Debugbar::info($post->id);
+            Debugbar::info($post->user->id);
             if (Hash::check($post->id . '_' . $post->user->id, $request->t)) {
                 return view('blog', ['post' => $post]);
             } else {
-                abort(406);
+                abort(404);
                 return;
             }
         }
