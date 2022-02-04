@@ -25,7 +25,7 @@ class PostController extends Controller
             if (Hash::check($post->id . '_' . $post->user->id, $request->t)) {
                 return view('blog', ['post' => $post]);
             } else {
-                abort(404);
+                abort(406);
                 return;
             }
         }
