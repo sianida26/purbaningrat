@@ -12,7 +12,8 @@ use Debugbar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Support\Array;
+use Illuminate\Support\Collection;
 
 class PostController extends Controller
 {
@@ -122,6 +123,11 @@ class PostController extends Controller
             ], 401);
         }
 
+        // $categories = collect($request->categories)->map(function($category){
+        //     Debugbar::info($category);
+        //     return Category::find($category);
+        // });
+
         if ($post){
             //if post is found
             $post->title = $request->title;
@@ -218,5 +224,12 @@ class PostController extends Controller
         }
 
         $post->delete();
+    }
+
+    public function categoryView(Request $request){
+
+        return view('category', [
+            'category' => $request->category,
+        ]);
     }
 }

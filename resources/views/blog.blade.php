@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{$post->title}} - Purbaningrat</title>
     @include('css/bootstrap-icons')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/roboto.css') }}">
@@ -32,7 +32,7 @@
             <img class="tw-w-12 tw-h-12 tw-rounded-full tw-object-cover" src="/storage/profiles/{{$post->user->author->getPPFilename()}}">
             <div class="tw-flex tw-flex-col tw-text-sm">
                 <p class="">{{$post->user->name}}</p>
-                <p class="tw-text-gray-700">13 hari yang lalu <b>&middot;</b> {{$post->getReadTime()}} menit baca</p>
+                <p class="tw-text-gray-700">{{ $post->updated_at->diffForHumans() }}<b>&middot;</b> {{$post->getReadTime()}} menit baca</p>
             </div>
         </div>
         <div class="tw-mt-4 tw-max-w-full tw-overflow-x-hidden">

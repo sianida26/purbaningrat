@@ -1110,6 +1110,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .tw-h-96 {
   height: 24rem;
 }
+.tw-h-64 {
+  height: 16rem;
+}
 .tw-max-h-32 {
   max-height: 8rem;
 }

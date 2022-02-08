@@ -26,3 +26,5 @@ Route::view('/admin/{path}', 'admin.app')->where('path', '.*$');
 
 //blog pages
 Route::get('/blog/{slug}', [PostController::class, 'view'])->where('slug', '.+$');
+
+Route::get('/kategori/{category}', [PostController::class, 'categoryView'])->where('category', '.+$');
