@@ -1,14 +1,18 @@
 <?php 
-
     use App\Models\Category;
 
     use Carbon\Carbon;
 
-    \Debugbar::disable(); 
+    use Debugbar;
 
-    $categoryModel = Category::firstWhere('name', $category);
+    // \Debugbar::disable(); 
 
-    $posts = $categoryModel ? $categoryModel->posts()->get() : [];
+    // $categoryModel = Category::firstWhere('name', $category);
+
+    // Debugbar::info($categoryModel);
+
+    $posts = [];
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="tw-w-screen">
@@ -31,13 +35,13 @@
 
         <div class="tw-flex tw-flex-col tw-gap-4">
             
-            @foreach($posts)
-                <div class="tw-border tw-p-2">
+            {{-- @foreach($posts) --}}
+                {{-- <div class="tw-border tw-p-2">
                     <img src="{{ asset('storage/images/cover/'.$post->cover_filename)}}" alt="{{ $post->title }}" class="tw-w-full tw-object-cover tw-h-64">
                     <p>{{$post->title}}</p>
                     <p>{!!$post->content!!}</p>
-                </div>
-            @endforeach
+                </div> --}}
+            {{-- @endforeach --}}
         </div>
     </div>
 
@@ -55,7 +59,7 @@
         <img src="{{ asset('storage/logos/logo-white.png') }}" alt="logo" class="tw-w-48 tw-object-cover">
     </footer>
 
-    @include('serviceworker')
+    {{-- @include('serviceworker') --}}
     @stack('scripts')
 </body>
 </html>

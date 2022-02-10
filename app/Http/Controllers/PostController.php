@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Array;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -228,8 +229,8 @@ class PostController extends Controller
 
     public function categoryView(Request $request){
 
-        return view('category', [
-            'category' => $request->category,
-        ]);
+        Debugbar::info($request->category);
+
+        return view('category');
     }
 }
