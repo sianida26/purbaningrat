@@ -3,15 +3,17 @@
 
     use Carbon\Carbon;
 
-    use Debugbar;
+    use Illuminate\Support\Str;
+
+    // use Debugbar;
 
     // \Debugbar::disable(); 
 
-    // $categoryModel = Category::firstWhere('name', $category);
+    $categoryModel = Category::firstWhere('name', $category);
 
-    // Debugbar::info($categoryModel);
+    $posts = $categoryModel === null ? collect([]) : $categoryModel->posts()->where('is_public',true)->get()->sortBy('views');
 
-    $posts = [];
+    Debugbar::info($posts);
 
 ?>
 <!DOCTYPE html>
@@ -33,15 +35,36 @@
     <div class="tw-w-full tw-px-6 md:tw-max-w-screen-sm lg:tw-max-w-screen-md tw-mx-auto tw-min-h-[calc(100vh-18rem)]">
         <h1 class="tw-text-4xl tw-mt-3 tw-font-bold tw-text-center lg:tw-mt-6 lg:tw-text-left">{{ Str::headline($category) }}</h1>
 
-        <div class="tw-flex tw-flex-col tw-gap-4">
+        <div class="tw-flex tw-flex-col tw-gap-4 tw-divide-x tw-mt-8">
             
-            {{-- @foreach($posts) --}}
-                {{-- <div class="tw-border tw-p-2">
-                    <img src="{{ asset('storage/images/cover/'.$post->cover_filename)}}" alt="{{ $post->title }}" class="tw-w-full tw-object-cover tw-h-64">
+            @foreach($posts as $post)
+                <div class="tw-flex tw-flex-col tw-gap-2 tw-w-full">
+                    {{-- author --}}
+                    <div class="tw-flex tw-items-center">
+                        {{-- pic --}}
+                        <img class="tw-w-8 tw-h-8 tw-rounded-full tw-mr-2 tw-object-cover" src={{ asset('/storage/profiles/' . $post->user->author->getPPFilename()) }} />
+                        <p>{{ $post->user->name }} <span class="tw-text-gray-500 tw-font-[350]">&middot; {{ $post->updated_at->diffForHumans() }}</span></p>
+                    </div>
+
+                    <div class="tw-flex">
+                        <div class="tw-flex tw-flex-col tw-flex-grow">
+                            {{-- title --}}
+                            <p class="tw-text-lg tw-font-bold tw-line-clamp-2">{{ $post->title }}</p>
+
+                            {{-- content --}}
+                            <p class="tw-line-clamp-4 tw-break-words">
+                                {!! Str::limit($post->content, 200) !!}
+                            </p>
+                        </div>
+                        <div class="tw-w-16 tw-flex-shrink-0 tw-bg-red-500">
+
+                        </div>
+                    </div>
+                    {{-- <img src="{{ asset('storage/images/cover/'.$post->cover_filename)}}" alt="{{ $post->title }}" class="tw-w-full tw-object-cover tw-h-64">
                     <p>{{$post->title}}</p>
-                    <p>{!!$post->content!!}</p>
-                </div> --}}
-            {{-- @endforeach --}}
+                    <p>{!!$post->content!!}</p> --}}
+                </div>
+            @endforeach
         </div>
     </div>
 

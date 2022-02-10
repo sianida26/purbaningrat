@@ -231,6 +231,8 @@ class PostController extends Controller
 
         Debugbar::info($request->category);
 
-        return view('category');
+        return view('category', [
+            'category' => $request->category,
+        ]);
     }
 }
