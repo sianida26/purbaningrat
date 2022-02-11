@@ -46,17 +46,17 @@
                         <p>{{ $post->user->name }} <span class="tw-text-gray-500 tw-font-[350]">&middot; {{ $post->updated_at->diffForHumans() }}</span></p>
                     </div>
 
-                    <div class="tw-flex">
-                        <div class="tw-flex tw-flex-col tw-flex-grow">
+                    <div class="tw-flex tw-max-w-full tw-w-full tw-flex-nowrap">
+                        <div class="tw-flex tw-flex-col tw-basis-3/4">
                             {{-- title --}}
                             <p class="tw-text-lg tw-font-bold tw-line-clamp-2">{{ $post->title }}</p>
 
                             {{-- content --}}
                             <p class="tw-line-clamp-4 tw-break-words">
-                                {!! Str::limit($post->content, 200) !!}
+                                {!! Str::limit($post->content, 100) !!}
                             </p>
                         </div>
-                        <div class="tw-w-16 tw-flex-shrink-0 tw-bg-red-500">
+                        <div class="tw-w-24 tw-flex-shrink-0 tw-bg-red-500">
 
                         </div>
                     </div>

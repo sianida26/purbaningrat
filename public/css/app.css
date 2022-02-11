@@ -1167,6 +1167,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .tw-w-5 {
   width: 1.25rem;
 }
+.tw-w-\[calc\(100\%-6rem\)\] {
+  width: calc(100% - 6rem);
+}
+.tw-w-1 {
+  width: 0.25rem;
+}
 .tw-max-w-full {
   max-width: 100%;
 }
@@ -1179,11 +1185,26 @@ Ensure the default browser behavior of the `hidden` attribute.
 .tw-flex-none {
   flex: none;
 }
+.tw-flex-auto {
+  flex: 1 1 auto;
+}
+.tw-flex-initial {
+  flex: 0 1 auto;
+}
+.tw-flex-1 {
+  flex: 1 1 0%;
+}
 .tw-flex-shrink-0 {
   flex-shrink: 0;
 }
+.tw-flex-shrink {
+  flex-shrink: 1;
+}
 .tw-flex-grow {
   flex-grow: 1;
+}
+.tw-basis-3\/4 {
+  flex-basis: 75%;
 }
 .tw-translate-x-72 {
   --tw-translate-x: 18rem;
@@ -1236,6 +1257,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .tw-flex-wrap {
   flex-wrap: wrap;
+}
+.tw-flex-nowrap {
+  flex-wrap: nowrap;
 }
 .tw-items-center {
   align-items: center;
@@ -1359,6 +1383,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
 }
+.tw-bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
 .tw-bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
@@ -1385,10 +1413,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .tw-bg-green-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity));
-}
-.tw-bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 .tw-bg-opacity-75 {
   --tw-bg-opacity: 0.75;
