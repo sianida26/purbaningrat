@@ -39,30 +39,16 @@
             
             @foreach($posts as $post)
                 <div class="tw-flex tw-flex-col tw-gap-2 tw-w-full">
-                    {{-- author --}}
-                    <div class="tw-flex tw-items-center">
-                        {{-- pic --}}
-                        <img class="tw-w-8 tw-h-8 tw-rounded-full tw-mr-2 tw-object-cover" src={{ asset('/storage/profiles/' . $post->user->author->getPPFilename()) }} />
-                        <p>{{ $post->user->name }} <span class="tw-text-gray-500 tw-font-[350]">&middot; {{ $post->updated_at->diffForHumans() }}</span></p>
-                    </div>
+                    {{-- cover --}}
+                    <img class="tw-w-full tw-h-40 tw-object-cover" src="{{ asset('storage/images/cover/' . $post->cover_filename) }}" >
 
-                    <div class="tw-flex tw-max-w-full tw-w-full tw-flex-nowrap">
-                        <div class="tw-flex tw-flex-col tw-basis-3/4">
-                            {{-- title --}}
-                            <p class="tw-text-lg tw-font-bold tw-line-clamp-2">{{ $post->title }}</p>
+                    <h1 class="tw-text-xl tw-font-bold tw-line-clamp-2">{{ $post->title }}</h1>
+                    <p class="tw-line-clamp-4 tw-text-lg tw-text-gray-600">
+                        {{ $post->subtitle ? $post->subtitle : Str::words($post->content, 20) }}
+                    </p>
 
-                            {{-- content --}}
-                            <p class="tw-line-clamp-4 tw-break-words">
-                                {!! Str::limit($post->content, 100) !!}
-                            </p>
-                        </div>
-                        <div class="tw-w-24 tw-flex-shrink-0 tw-bg-red-500">
-
-                        </div>
-                    </div>
-                    {{-- <img src="{{ asset('storage/images/cover/'.$post->cover_filename)}}" alt="{{ $post->title }}" class="tw-w-full tw-object-cover tw-h-64">
-                    <p>{{$post->title}}</p>
-                    <p>{!!$post->content!!}</p> --}}
+                    <div class="tw-w-full tw-flex tw-gap-2">
+                        <img src="{{ asset('storage/profiles/' . $post->user->author->getPPFilename()) }}" class="tw-w-8 tw-h-8 tw-object-cover tw-rounded-full" alt="">
                 </div>
             @endforeach
         </div>
