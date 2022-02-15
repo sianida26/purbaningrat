@@ -32,26 +32,37 @@
 </head>
 <body class="tw-w-screen tw-overflow-x-hidden tw-min-h-screen tw-relative">
     <x-header />
-    <div class="tw-w-full tw-px-6 md:tw-max-w-screen-sm lg:tw-max-w-screen-md tw-mx-auto tw-min-h-[calc(100vh-18rem)]">
+    <div class="tw-w-full tw-px-6 md:tw-max-w-screen-sm lg:tw-max-w-screen-lg tw-mx-auto tw-min-h-[calc(100vh-18rem)]">
         <h1 class="tw-text-4xl tw-mt-3 tw-font-bold tw-text-center lg:tw-mt-6 lg:tw-text-left">{{ Str::headline($category) }}</h1>
 
-        <div class="tw-flex tw-flex-col tw-gap-4 tw-divide-x tw-mt-8">
-            
-            @foreach($posts as $post)
-                <div class="tw-flex tw-flex-col tw-gap-2 tw-w-full">
-                    {{-- cover --}}
-                    <img class="tw-w-full tw-h-40 tw-object-cover" src="{{ asset('storage/images/cover/' . $post->cover_filename) }}" >
+        @if ($posts->isEmpty())
+            <p class="tw-text-lg tw-mt-6">- Tidak ada post -</p>
+        @else
+            <div class="tw-flex tw-flex-col tw-gap-8 tw-divide-x tw-mt-8 md:tw-grid md:tw-grid-cols-3 md:tw-gap-y-16">
+                
+                @foreach($posts as $post)
+                    <a href="/blog/{{ $post->slug }}" class="tw-flex tw-flex-col tw-gap-2 tw-w-full">
+                        {{-- cover --}}
+                        <img class="tw-w-full tw-h-40 tw-object-cover" src="{{ asset('storage/images/cover/' . $post->cover_filename) }}" >
 
-                    <h1 class="tw-text-xl tw-font-bold tw-line-clamp-2">{{ $post->title }}</h1>
-                    <p class="tw-line-clamp-4 tw-text-lg tw-text-gray-600">
-                        {{ $post->subtitle ? $post->subtitle : Str::words($post->content, 20) }}
-                    </p>
+                        <h1 class="tw-text-xl tw-font-bold tw-line-clamp-3 {{-- md:tw-min-h-[3.75rem] --}}">{{ $post->title }}</h1>
+                        <div class="{{-- md:tw-min-h-[7.875rem] --}}"> {{-- calc(4*1.125rem*1.75rem) (number of lines) * (font-size) * (line-height multiplier) --}}
+                            <p class="tw-line-clamp-4 tw-text-lg tw-text-gray-600">
+                                {!! $post->subtitle ? $post->subtitle : Str::words($post->content, 20) !!}
+                            </p>
+                        </div>
 
-                    <div class="tw-w-full tw-flex tw-gap-2">
-                        <img src="{{ asset('storage/profiles/' . $post->user->author->getPPFilename()) }}" class="tw-w-8 tw-h-8 tw-object-cover tw-rounded-full" alt="">
-                </div>
-            @endforeach
-        </div>
+                        <div class="tw-w-full tw-flex tw-gap-2">
+                            <img src="{{ asset('storage/profiles/' . $post->user->author->getPPFilename()) }}" class="tw-w-8 tw-h-8 tw-object-cover tw-rounded-full" alt="">
+                            <div class="tw-flex tw-flex-col">
+                                <p class="tw-text-gray-600 tw-text-sm">{{ $post->user->name }}</p>
+                                <p class="tw-text-gray-600 tw-text-sm">{{ $post->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        @endif
     </div>
 
     <footer class="tw-w-full tw-bg-zinc-900 tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-56 tw-px-4 tw-mt-8">
