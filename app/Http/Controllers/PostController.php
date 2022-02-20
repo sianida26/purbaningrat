@@ -30,13 +30,12 @@ class PostController extends Controller
             Debugbar::info($request->t);
             Debugbar::info($post->id);
             Debugbar::info($post->user->id);
-            $checkHash = Hash::check($request->t, $post->user->id);
-            Debugbar::info($checkHash);
+            $checkHash = Hash::check($post->id . '_' . $post->user->id, $request->t);
             if ($checkHash) {
-                Debugbar::info('hash OK');
+                Debugbar::info('hash match');
                 return view('blog', ['post' => $post]);
             } else {
-                Debugbar::info('hash NOT OK');
+                Debugbar::info('hash not match');
                 abort(404);
                 return;
             }
