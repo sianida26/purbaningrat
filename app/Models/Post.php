@@ -58,4 +58,18 @@ class Post extends Model
         $t = round($this->countWords() / 200);
         return $t < 1 ? 1 : $t; //minimal 1 menit
     }
+
+    /**
+     * Returns the post's cover URL
+     */
+    public function getCoverUrl(){
+        return $this->cover_filename ? asset('storage/images/cover/' . $this->cover_filename) : asset('storage/images/cover/default.jpeg');
+    }
+
+    /**
+     * Returns the author's profile photo URL
+     */
+    public function getAuthorPhotoUrl(){
+        return asset('storage/profiles/' . $this->user->author->getPPFilename());
+    }
 }

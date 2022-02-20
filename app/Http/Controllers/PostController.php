@@ -41,7 +41,7 @@ class PostController extends Controller
         if (!$post->is_public) abort(404);
 
         $post->views = $post->views + 1;
-        $post->save();
+        $post->save(['timestamps' => false]);
         return view('blog', ['post' => $post]);
     }
 

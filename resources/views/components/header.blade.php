@@ -1,4 +1,4 @@
-<div class="tw-w-screen tw-relative tw-min-h-[4rem]" id="header"></div> 
+<div class="tw-w-screen tw-relative tw-min-h-[4rem]" style="z-index: 100" id="header"></div> 
 
 @push('scripts')
     {{-- <script>
