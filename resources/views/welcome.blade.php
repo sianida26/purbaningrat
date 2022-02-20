@@ -28,7 +28,7 @@
             <div class="tw-flex tw-flex-col tw-gap-2 lg:tw-flex-row">
 
                 {{-- highlight --}}
-                <a class="tw-w-full tw-aspect-video tw-relative" href="{{ $post->slug }}">
+                <a class="tw-w-full tw-aspect-video tw-relative" href="{{ $highlightPost->slug }}">
                     <div class="tw-w-full tw-h-full tw-bg-white">
                         <img src="{{ $highlightPost->getCoverUrl() }}" alt="" class="tw-w-full tw-h-full tw-object-cover">
                     </div>
