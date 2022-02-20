@@ -9,7 +9,7 @@
 
 ?>
 <!DOCTYPE html>
-<html lang="id" className="tw-w-screen">
+<html lang="id" className="tw-w-screen tw-overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

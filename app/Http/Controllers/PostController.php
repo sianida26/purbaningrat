@@ -12,7 +12,7 @@ use Debugbar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Array;
+// use Illuminate\Support\Array;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
