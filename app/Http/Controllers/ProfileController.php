@@ -41,6 +41,7 @@ class ProfileController extends Controller
         $user->author->location = $request->location;
         $user->author->description = $request->bio;
         $user->author->save();
+        $user->save();
 
         return [
             'photo' => $user->author->profile_photo_filename ? $user->author->profile_photo_filename : 'default.jpeg',
