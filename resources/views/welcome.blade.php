@@ -28,7 +28,7 @@
             <div class="tw-flex tw-flex-col tw-gap-2 lg:tw-flex-row">
 
                 {{-- highlight --}}
-                <div class="tw-w-full tw-aspect-video tw-relative">
+                <a class="tw-w-full tw-aspect-video tw-relative" href="{{ $post->slug }}">
                     <div class="tw-w-full tw-h-full tw-bg-white">
                         <img src="{{ $highlightPost->getCoverUrl() }}" alt="" class="tw-w-full tw-h-full tw-object-cover">
                     </div>
@@ -37,7 +37,7 @@
                             <h1 class="tw-text-white tw-text-center tw-text-xl tw-font-semibold tw-line-clamp-2">{{ $highlightPost->title }}</h1>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 {{-- kolom 1 --}}
                 <div class="tw-w-full tw-flex tw-flex-col tw-px-4 tw-gap-6 tw-mt-4 lg:tw-max-w-sm lg:tw-justify-around">
