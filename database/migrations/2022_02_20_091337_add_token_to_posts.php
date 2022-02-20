@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Post;
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class AddTokenToPosts extends Migration
 {
@@ -15,7 +18,13 @@ class AddTokenToPosts extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             //
-            $table->string('token')->nullable();
+            $table->string('token')->nullable()->after('views');
+        });
+
+        //update token
+        Post::all()->each(function($post){
+            $post->token = hash('sha256',$post->id . '_' . $post->user->id);
+            $post->save();
         });
     }
 
@@ -27,7 +36,7 @@ class AddTokenToPosts extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            //
+            $table->dropColumn('token');
         });
     }
 }

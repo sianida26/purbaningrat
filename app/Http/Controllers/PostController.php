@@ -30,7 +30,7 @@ class PostController extends Controller
             Debugbar::info($request->t);
             Debugbar::info($post->id);
             Debugbar::info($post->user->id);
-            $checkHash = Hash::check($post->id . '_' . $post->user->id, $request->t);
+            $checkHash = $post->token === $request->t;
             if ($checkHash) {
                 Debugbar::info('hash match');
                 return view('blog', ['post' => $post]);
@@ -66,7 +66,7 @@ class PostController extends Controller
                 'subtitle' => $post->subtitle,
                 'categories' => $categories,
                 'cover_filename' => $post->cover_filename,
-                'token' => Hash::make($post->id . '_' . Auth::id()),
+                'token' => hash('sha256',$post->id . '_' . $post->user->id),
                 'visibility' => $post['is_public'],
                 'selected_categories' => $post->getCategoryIds(),
                 'updated_at' => $post->updated_at,                
@@ -80,8 +80,14 @@ class PostController extends Controller
             $content = 'Dokumen tanpa isi';
             $slug = 'dokumen-tanpa-judul';
             $subtitle = '';
+            $token =  hash('sha256', rand(0, 1000000) . '_' . rand(0, 1000000));
             $cover_filename = 'default.jpeg';
             $tags = [];
+
+            //regenerate token if token already exists
+            while (Post::where('token', $token)->exists()) {
+                $token =  hash('sha256', rand(0, 1000000) . '_' . rand(0, 1000000));
+            }
 
             //check if slug is already in the database. if exists, then add a random 5 character string to the end of the slug
             while (Post::where('slug', $slug)->exists()){
@@ -109,7 +115,7 @@ class PostController extends Controller
                 'tags' => $post->tags,
                 'cover_filename' => $post->cover_filename,
                 'subtitle' => $post->subtitle,
-                'token' => Hash::make($post->id . '_' . Auth::id()),
+                'token' => $token,
                 'visibility' => $post['is_public'],
                 'categories' => $categories,
                 'selected_categories' => $post->getCategoryIds(),
