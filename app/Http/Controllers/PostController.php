@@ -30,14 +30,19 @@ class PostController extends Controller
             Debugbar::info($request->t);
             Debugbar::info($post->id);
             Debugbar::info($post->user->id);
-            if (Hash::check($post->id . '_' . $post->user->id, $request->t)) {
+            $checkHash = Hash::check($request->t, $post->user->id);
+            Debugbar::info($checkHash);
+            if ($checkHash) {
+                Debugbar::info('hash OK');
                 return view('blog', ['post' => $post]);
             } else {
+                Debugbar::info('hash NOT OK');
                 abort(404);
                 return;
             }
         }
 
+        Debugbar::info('no token');
         if (!$post->is_public) abort(404);
 
         $post->views = $post->views + 1;
