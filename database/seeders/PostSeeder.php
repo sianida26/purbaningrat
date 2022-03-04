@@ -14,6 +14,14 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        //
+
+        $faker = Faker::create('id_ID');
+
+        for($i = 0; $i < 10; $i++){
+            $post = new \App\Models\Post();
+            $post->title = $faker->sentence(5);
+            $post->content = $faker->paragraph(5);
+            $post->save();
+        }
     }
 }
